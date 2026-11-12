@@ -52,6 +52,16 @@ const config = Object.fromEntries(
       assert.equal(await page.locator("h1").count(), 1, route + " h1");
       // Проверяем устойчивое состояние: появление секций меняет opacity при прокрутке axe.
       await page.emulateMedia({ reducedMotion: "reduce" });
+      // Переключение media ещё не гарантирует кадр с завершённым opacity-переходом.
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      });
+      await page.waitForFunction(() =>
+        [...document.querySelectorAll("[data-horizon-reveal]")].every(element =>
+          Number(getComputedStyle(element).opacity) === 1
+        )
+      );
       const result = await new AxeBuilder({ page })
         .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
         .analyze();
