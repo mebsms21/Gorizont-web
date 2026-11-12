@@ -5,16 +5,16 @@
     "appearanceTools": true,
     "useRootPaddingAwareAlignments": true,
     "layout": {
-      "contentSize": "800px",
-      "wideSize": "1320px"
+      "contentSize": "840px",
+      "wideSize": "1360px"
     },
     "color": {
       "defaultPalette": false,
       "palette": [
         {
           "slug": "paper",
-          "name": "Тёплый белый",
-          "color": "#f5f3ef"
+          "name": "Белый",
+          "color": "#ffffff"
         },
         {
           "slug": "white",
@@ -24,32 +24,37 @@
         {
           "slug": "ink",
           "name": "Графит",
-          "color": "#27282e"
+          "color": "#202833"
         },
         {
           "slug": "muted",
-          "name": "Серый",
-          "color": "#66645f"
+          "name": "Серый текст",
+          "color": "#586171"
         },
         {
           "slug": "accent",
-          "name": "Тёплая бронза",
-          "color": "#765831"
+          "name": "Фирменный оранжевый",
+          "color": "#ff6500"
         },
         {
           "slug": "line",
-          "name": "Светлый камень",
-          "color": "#dedbd4"
+          "name": "Светло-серый",
+          "color": "#e5e8ed"
         },
         {
           "slug": "sand",
-          "name": "Песочный",
-          "color": "#d4b78b"
+          "name": "Фоновый серый",
+          "color": "#f4f5f7"
         }
       ]
     },
     "spacing": {
-      "units": ["px", "rem", "vw", "%"],
+      "units": [
+        "px",
+        "rem",
+        "vw",
+        "%"
+      ],
       "spacingSizes": [
         {
           "slug": "20",
@@ -84,15 +89,17 @@
       "fontFamilies": [
         {
           "slug": "sans",
-          "name": "Inter",
-          "fontFamily": "Inter, Arial, sans-serif",
+          "name": "Manrope",
+          "fontFamily": "Manrope, Arial, sans-serif",
           "fontFace": [
             {
-              "fontFamily": "Inter",
+              "fontFamily": "Manrope",
+              "fontWeight": "200 800",
               "fontStyle": "normal",
-              "fontWeight": "100 900",
               "fontDisplay": "swap",
-              "src": ["file:./assets/fonts/inter.woff2"]
+              "src": [
+                "file:./assets/fonts/manrope.woff2"
+              ]
             }
           ]
         }
@@ -116,19 +123,19 @@
         {
           "slug": "x-large",
           "name": "Заголовок раздела",
-          "size": "3.5rem",
+          "size": "2.6rem",
           "fluid": {
-            "min": "2.2rem",
-            "max": "3.5rem"
+            "min": "1.9rem",
+            "max": "2.6rem"
           }
         },
         {
           "slug": "hero",
           "name": "Главный заголовок",
-          "size": "6.3rem",
+          "size": "4.8rem",
           "fluid": {
-            "min": "2.9rem",
-            "max": "6.3rem"
+            "min": "2.65rem",
+            "max": "4.8rem"
           }
         }
       ]
@@ -141,7 +148,7 @@
     },
     "typography": {
       "fontFamily": "var:preset|font-family|sans",
-      "fontSize": "var:preset|font-size|medium",
+      "fontSize": "1rem",
       "lineHeight": "1.65"
     },
     "spacing": {
@@ -155,9 +162,9 @@
       "heading": {
         "typography": {
           "fontFamily": "var:preset|font-family|sans",
-          "fontWeight": "500",
-          "lineHeight": "1.08",
-          "letterSpacing": "-0.055em"
+          "fontWeight": "750",
+          "lineHeight": "1.06",
+          "letterSpacing": "-0.045em"
         }
       },
       "link": {
@@ -173,14 +180,14 @@
       "button": {
         "color": {
           "background": "var:preset|color|accent",
-          "text": "var:preset|color|white"
+          "text": "var:preset|color|ink"
         },
         "border": {
-          "radius": "0px"
+          "radius": "50px"
         },
         "typography": {
-          "fontSize": "1rem",
-          "fontWeight": "400"
+          "fontSize": ".9rem",
+          "fontWeight": "650"
         },
         "spacing": {
           "padding": {
@@ -196,9 +203,9 @@
       "core/site-title": {
         "typography": {
           "fontFamily": "var:preset|font-family|sans",
-          "fontSize": "1.55rem",
-          "fontWeight": "600",
-          "letterSpacing": "0.16em"
+          "fontSize": "1.35rem",
+          "fontWeight": "800",
+          "letterSpacing": "-0.06em"
         },
         "elements": {
           "link": {
@@ -244,7 +251,9 @@
     {
       "name": "canvas",
       "title": "Страница без заголовка",
-      "postTypes": ["page"]
+      "postTypes": [
+        "page"
+      ]
     }
   ]
 }

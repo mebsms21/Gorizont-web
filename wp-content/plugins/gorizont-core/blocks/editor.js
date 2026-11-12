@@ -103,3 +103,10 @@
   window.wp.blockEditor,
   window.wp.serverSideRender,
 );
+(function (wp) {
+  wp.blocks.registerBlockType('gorizont/brief', {
+    apiVersion: 3, title: 'Бриф проекта ГОРИЗОНТ', icon: 'feedback', category: 'widgets',
+    edit: function () { return wp.element.createElement('div', wp.blockEditor.useBlockProps(), wp.element.createElement(wp.serverSideRender.default || wp.serverSideRender, {block: 'gorizont/brief'})); },
+    save: function () { return null; }
+  });
+})(window.wp);

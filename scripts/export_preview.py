@@ -66,7 +66,7 @@ def main():
         text = text.replace('</body>', '<script src="' + BASE + '/preview.js" defer></script></body>')
         output = OUT / unquote(destination).lstrip('/') / 'index.html'
         output.parent.mkdir(parents=True, exist_ok=True)
-        output.write_text(text)
+        output.write_text('\n'.join(line.rstrip() for line in text.splitlines()) + '\n')
     visited = set()
     while ASSETS - visited:
         path = sorted(ASSETS - visited)[0]
@@ -89,7 +89,7 @@ def main():
     shutil.copy2(ROOT / 'scripts/preview.js', OUT / 'preview.js')
     (OUT / '.nojekyll').write_text('')
     (OUT / 'robots.txt').write_text('User-agent: *\nDisallow: /\n')
-    (OUT / '404.html').write_text('<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Страница не найдена — ГОРИЗОНТ</title><body style="background:#f5f3ef;color:#27282e;font-family:Arial;padding:10vw"><h1>Эта страница за горизонтом</h1><p><a href="' + BASE + '/">На главную</a></p></body></html>')
+    (OUT / '404.html').write_text('<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Страница не найдена — ГОРИЗОНТ</title><body style="background:#f4f5f7;color:#202833;font-family:Arial;padding:10vw"><h1>Эта страница за горизонтом</h1><p><a href="' + BASE + '/">На главную</a></p></body></html>')
     print('Экспортировано страниц:', len(routes), 'ресурсов:', len(visited))
 
 

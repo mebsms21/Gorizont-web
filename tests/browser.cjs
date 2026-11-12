@@ -42,7 +42,7 @@ const config = Object.fromEntries(
       "/kontakty/",
       "/privacy/",
       "/proekt/atelier/",
-      "/usluga/development/",
+      "/usluga/corporate/",
     ]) {
       const response = await page.goto(base + route, {
         waitUntil: "networkidle",
@@ -50,9 +50,12 @@ const config = Object.fromEntries(
       assert.equal(response.status(), 200, route);
       assert.equal(await page.locator("html").getAttribute("lang"), "ru-RU");
       assert.equal(await page.locator("h1").count(), 1, route + " h1");
+      // Проверяем устойчивое состояние: появление секций меняет opacity при прокрутке axe.
+      await page.emulateMedia({ reducedMotion: "reduce" });
       const result = await new AxeBuilder({ page })
         .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
         .analyze();
+      await page.emulateMedia({ reducedMotion: "no-preference" });
       report.pages.push({
         route,
         status: response.status(),
@@ -109,6 +112,7 @@ const config = Object.fromEntries(
           .locator(".wp-block-navigation__responsive-container.is-menu-open")
           .waitFor();
         await page.keyboard.press("Escape");
+        await page.waitForTimeout(550);
         assert.equal(
           await page
             .locator(".wp-block-navigation__responsive-container.is-menu-open")
@@ -124,11 +128,26 @@ const config = Object.fromEntries(
     await page.goto(base + "/proekty/");
     await page.getByRole("link", { name: "Лендинги", exact: true }).click();
     assert.equal(await page.locator(".g-card").count(), 1);
-    assert.match(await page.locator(".g-card").innerText(), /Форма/);
+    assert.match(await page.locator(".g-card").innerText(), /Фитнес/);
     report.checks.push("Фильтр портфолио");
     await page.goto(base + "/missing-qa-page/");
     assert.match(await page.locator("h1").innerText(), /за горизонтом/);
     report.checks.push("Русская страница 404");
+    await page.goto(base + "/kontakty/");
+    await page.locator('[name="name"]').fill("Тестовый посетитель");
+    await page.locator('[name="email"]').fill("test@example.com");
+    await page.locator('[name="message"]').fill("Нужен сайт для презентации компании.");
+    const downloadPromise = page.waitForEvent("download");
+    await page.getByRole("button", {name:"Скачать бриф проекта"}).click();
+    const download = await downloadPromise;
+    assert.equal(download.suggestedFilename(), "Бриф-проекта.txt");
+    assert.match(await page.locator('[role="status"]').innerText(), /никуда не отправлялись/);
+    report.checks.push("Бриф скачивается в файл без отправки персональных данных");
+    const reduced = await browser.newContext({reducedMotion:"reduce"});
+    const rp = await reduced.newPage(); await rp.goto(base + "/");
+    assert.equal(await rp.locator(".horizon-intro").isVisible(), false);
+    await reduced.close();
+    report.checks.push("Настройка уменьшения анимации учитывается");
     await page.goto(base + "/wp-login.php");
     await page.locator("#user_login").fill(config.WP_ADMIN_USER);
     await page.locator("#user_pass").fill(config.WP_ADMIN_PASSWORD);
@@ -145,7 +164,7 @@ const config = Object.fromEntries(
     report.checks.push("Вход в русскую панель и настройки контактов");
     await page.goto(base + "/wp-admin/edit.php?post_type=g_service");
     await page
-      .getByRole("link", { name: "Стратегия и структура", exact: true })
+      .getByRole("link", { name: "Корпоративные сайты", exact: true })
       .first()
       .click();
     await page.waitForFunction(
@@ -242,6 +261,10 @@ const config = Object.fromEntries(
         2,
       ),
     );
+    assert.deepEqual(invalid, [], "Главная содержит только валидные блоки Gutenberg");
+    assert.deepEqual(errors, [], "Ошибки JavaScript");
+    assert.deepEqual(report.frontendFailedRequests, [], "Не загруженные ресурсы");
+    assert.equal(report.pages.reduce((count, p) => count + p.a11y.length, 0), 0, "Доступность WCAG AA");
   } finally {
     await browser.close();
   }
