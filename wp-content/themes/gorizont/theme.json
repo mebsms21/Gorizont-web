@@ -1,0 +1,250 @@
+{
+  "$schema": "https://schemas.wp.org/wp/6.6/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "useRootPaddingAwareAlignments": true,
+    "layout": {
+      "contentSize": "800px",
+      "wideSize": "1320px"
+    },
+    "color": {
+      "defaultPalette": false,
+      "palette": [
+        {
+          "slug": "paper",
+          "name": "Тёплый белый",
+          "color": "#f5f3ef"
+        },
+        {
+          "slug": "white",
+          "name": "Белый",
+          "color": "#ffffff"
+        },
+        {
+          "slug": "ink",
+          "name": "Графит",
+          "color": "#27282e"
+        },
+        {
+          "slug": "muted",
+          "name": "Серый",
+          "color": "#66645f"
+        },
+        {
+          "slug": "accent",
+          "name": "Тёплая бронза",
+          "color": "#765831"
+        },
+        {
+          "slug": "line",
+          "name": "Светлый камень",
+          "color": "#dedbd4"
+        },
+        {
+          "slug": "sand",
+          "name": "Песочный",
+          "color": "#d4b78b"
+        }
+      ]
+    },
+    "spacing": {
+      "units": ["px", "rem", "vw", "%"],
+      "spacingSizes": [
+        {
+          "slug": "20",
+          "name": "XS",
+          "size": "0.75rem"
+        },
+        {
+          "slug": "30",
+          "name": "S",
+          "size": "1.25rem"
+        },
+        {
+          "slug": "40",
+          "name": "M",
+          "size": "2rem"
+        },
+        {
+          "slug": "50",
+          "name": "L",
+          "size": "3rem"
+        },
+        {
+          "slug": "60",
+          "name": "XL",
+          "size": "clamp(3rem,7vw,7rem)"
+        }
+      ]
+    },
+    "typography": {
+      "fluid": true,
+      "defaultFontSizes": false,
+      "fontFamilies": [
+        {
+          "slug": "sans",
+          "name": "Inter",
+          "fontFamily": "Inter, Arial, sans-serif",
+          "fontFace": [
+            {
+              "fontFamily": "Inter",
+              "fontStyle": "normal",
+              "fontWeight": "100 900",
+              "fontDisplay": "swap",
+              "src": ["file:./assets/fonts/inter.woff2"]
+            }
+          ]
+        }
+      ],
+      "fontSizes": [
+        {
+          "slug": "small",
+          "name": "Мелкий",
+          "size": "0.875rem"
+        },
+        {
+          "slug": "medium",
+          "name": "Основной",
+          "size": "1.0625rem"
+        },
+        {
+          "slug": "large",
+          "name": "Крупный",
+          "size": "1.5rem"
+        },
+        {
+          "slug": "x-large",
+          "name": "Заголовок раздела",
+          "size": "3.5rem",
+          "fluid": {
+            "min": "2.2rem",
+            "max": "3.5rem"
+          }
+        },
+        {
+          "slug": "hero",
+          "name": "Главный заголовок",
+          "size": "6.3rem",
+          "fluid": {
+            "min": "2.9rem",
+            "max": "6.3rem"
+          }
+        }
+      ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "var:preset|color|paper",
+      "text": "var:preset|color|ink"
+    },
+    "typography": {
+      "fontFamily": "var:preset|font-family|sans",
+      "fontSize": "var:preset|font-size|medium",
+      "lineHeight": "1.65"
+    },
+    "spacing": {
+      "blockGap": "1.5rem",
+      "padding": {
+        "left": "clamp(1.25rem,4vw,4rem)",
+        "right": "clamp(1.25rem,4vw,4rem)"
+      }
+    },
+    "elements": {
+      "heading": {
+        "typography": {
+          "fontFamily": "var:preset|font-family|sans",
+          "fontWeight": "500",
+          "lineHeight": "1.08",
+          "letterSpacing": "-0.055em"
+        }
+      },
+      "link": {
+        "color": {
+          "text": "var:preset|color|accent"
+        },
+        ":hover": {
+          "typography": {
+            "textDecoration": "underline"
+          }
+        }
+      },
+      "button": {
+        "color": {
+          "background": "var:preset|color|accent",
+          "text": "var:preset|color|white"
+        },
+        "border": {
+          "radius": "0px"
+        },
+        "typography": {
+          "fontSize": "1rem",
+          "fontWeight": "400"
+        },
+        "spacing": {
+          "padding": {
+            "top": "1rem",
+            "right": "1.5rem",
+            "bottom": "1rem",
+            "left": "1.5rem"
+          }
+        }
+      }
+    },
+    "blocks": {
+      "core/site-title": {
+        "typography": {
+          "fontFamily": "var:preset|font-family|sans",
+          "fontSize": "1.55rem",
+          "fontWeight": "600",
+          "letterSpacing": "0.16em"
+        },
+        "elements": {
+          "link": {
+            "color": {
+              "text": "var:preset|color|ink"
+            },
+            "typography": {
+              "textDecoration": "none"
+            }
+          }
+        }
+      },
+      "core/navigation": {
+        "typography": {
+          "fontSize": "0.9375rem"
+        }
+      },
+      "core/post-title": {
+        "typography": {
+          "fontSize": "var:preset|font-size|x-large"
+        }
+      },
+      "core/separator": {
+        "color": {
+          "text": "var:preset|color|line"
+        }
+      }
+    }
+  },
+  "templateParts": [
+    {
+      "name": "header",
+      "title": "Шапка сайта",
+      "area": "header"
+    },
+    {
+      "name": "footer",
+      "title": "Подвал сайта",
+      "area": "footer"
+    }
+  ],
+  "customTemplates": [
+    {
+      "name": "canvas",
+      "title": "Страница без заголовка",
+      "postTypes": ["page"]
+    }
+  ]
+}

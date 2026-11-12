@@ -1,0 +1,12 @@
+{
+  "name": "gorizont-wordpress-checks",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test:browser": "node tests/browser.cjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.58.0",
+    "@axe-core/playwright": "^4.11.0"
+  }
+}

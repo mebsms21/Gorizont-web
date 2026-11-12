@@ -1,0 +1,8 @@
+<?php
+/**
+ * Title: Этапы работы в три колонки
+ * Slug: gorizont/process
+ * Categories: gorizont
+ */
+?>
+<!-- wp:columns {"align":"wide"} --><div class="wp-block-columns alignwide"><!-- wp:column --><div class="wp-block-column"><!-- wp:group {"className":"process-step"} --><div class="wp-block-group process-step"><!-- wp:paragraph {"className":"eyebrow"} --><p class="eyebrow">01 / Исследование</p><!-- /wp:paragraph --><!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Понимаем задачу</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Знакомимся с компанией, продуктом и аудиторией.</p><!-- /wp:paragraph --></div><!-- /wp:group --></div><!-- /wp:column --><!-- wp:column --><div class="wp-block-column"><!-- wp:group {"className":"process-step"} --><div class="wp-block-group process-step"><!-- wp:paragraph {"className":"eyebrow"} --><p class="eyebrow">02 / Проектирование</p><!-- /wp:paragraph --><!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Создаём решение</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Соединяем структуру, содержание и выразительный дизайн.</p><!-- /wp:paragraph --></div><!-- /wp:group --></div><!-- /wp:column --><!-- wp:column --><div class="wp-block-column"><!-- wp:group {"className":"process-step"} --><div class="wp-block-group process-step"><!-- wp:paragraph {"className":"eyebrow"} --><p class="eyebrow">03 / Запуск</p><!-- /wp:paragraph --><!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Проверяем детали</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Тестируем сайт и передаём удобные инструменты управления.</p><!-- /wp:paragraph --></div><!-- /wp:group --></div><!-- /wp:column --></div><!-- /wp:columns -->

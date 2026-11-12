@@ -1,0 +1,41 @@
+name: Проверка WordPress
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  wordpress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Проверить JavaScript и shell
+        run: |
+          node --check wp-content/plugins/gorizont-core/blocks/editor.js
+          node --check tests/browser.cjs
+          bash -n bin/setup.sh bin/configure.sh bin/wp
+      - name: Установить WordPress с демоматериалами
+        run: ./bin/setup.sh
+      - name: Проверить PHP и интеграцию
+        run: |
+          mkdir -p test-results
+          docker compose exec -T wordpress sh -c 'find wp-content/themes/gorizont wp-content/plugins/gorizont-core /opt/gorizont /tests -name "*.php" -print0 | xargs -0 -n 1 php -l'
+          ./bin/wp eval-file /tests/integration.php | tee test-results/integration.txt
+      - name: Установить браузерные зависимости
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Проверить страницы, Gutenberg и доступность
+        run: npm run test:browser
+      - name: Сохранить результаты и скриншоты
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wordpress-checks
+          path: test-results/
+          retention-days: 7
+      - name: Остановить локальные контейнеры
+        if: always()
+        run: docker compose down

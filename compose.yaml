@@ -1,0 +1,65 @@
+name: gorizont
+x-wp-env: &wp-env
+  WORDPRESS_DB_HOST: db:3306
+  WORDPRESS_DB_NAME: gorizont
+  WORDPRESS_DB_USER: gorizont
+  WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:?Запустите bin/configure.sh}
+services:
+  db:
+    image: mariadb:11.4
+    environment:
+      MARIADB_DATABASE: gorizont
+      MARIADB_USER: gorizont
+      MARIADB_PASSWORD: ${DB_PASSWORD:?Запустите bin/configure.sh}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Запустите bin/configure.sh}
+    volumes: ["db_data:/var/lib/mysql"]
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  volume-init:
+    image: wordpress:cli-php8.3
+    user: "0:0"
+    entrypoint: ["sh", "-c", "chown 82:82 /var/www/html"]
+    volumes: ["wordpress_data:/var/www/html"]
+  wordpress:
+    image: wordpress:cli-php8.3
+    user: "82:82"
+    entrypoint: ["sh", "/opt/gorizont/serve.sh"]
+    environment: *wp-env
+    ports: ["127.0.0.1:${WP_PORT:-8080}:8080"]
+    depends_on:
+      db: { condition: service_healthy }
+      volume-init: { condition: service_completed_successfully }
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./wp-content/themes/gorizont:/var/www/html/wp-content/themes/gorizont:ro
+      - ./wp-content/plugins/gorizont-core:/var/www/html/wp-content/plugins/gorizont-core:ro
+      - ./docker:/opt/gorizont:ro
+      - ./tests:/tests:ro
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'php -r ''$$s=@fsockopen("127.0.0.1",8080);exit($$s?0:1);''',
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 36
+  cli:
+    entrypoint: ["wp"]
+    image: wordpress:cli-php8.3
+    user: "82:82"
+    environment: *wp-env
+    profiles: ["tools"]
+    depends_on:
+      wordpress: { condition: service_healthy }
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./wp-content/themes/gorizont:/var/www/html/wp-content/themes/gorizont:ro
+      - ./wp-content/plugins/gorizont-core:/var/www/html/wp-content/plugins/gorizont-core:ro
+      - ./tests:/tests:ro
+volumes:
+  db_data:
+  wordpress_data:
