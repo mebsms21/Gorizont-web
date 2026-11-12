@@ -21,7 +21,7 @@ services:
   volume-init:
     image: wordpress:cli-php8.3
     user: "0:0"
-    entrypoint: ["sh", "-c", "chown 82:82 /var/www/html"]
+    entrypoint: ["sh", "-c", "mkdir -p /var/www/html/wp-content/uploads /var/www/html/wp-content/languages && chown 82:82 /var/www/html /var/www/html/wp-content /var/www/html/wp-content/uploads /var/www/html/wp-content/languages"]
     volumes: ["wordpress_data:/var/www/html"]
   wordpress:
     image: wordpress:cli-php8.3
