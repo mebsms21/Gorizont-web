@@ -250,6 +250,7 @@ const config = Object.fromEntries(
           pages: report.pages.map((p) => ({
             route: p.route,
             violations: p.a11y.length,
+            details: p.a11y,
           })),
           viewports: report.viewports,
           checks: report.checks,
