@@ -49,7 +49,11 @@ def main():
     for taxonomy, prefix in [('g_project_type', '/proekty/'), ('g_service_type', '/uslugi/')]:
         for term in api(taxonomy + '?per_page=100&hide_empty=true'):
             routes[prefix + '?category=' + term['slug']] = prefix + 'filtr/' + term['slug'] + '/'
-    replacements = {SOURCE + source: TARGET + destination for source, destination in routes.items() if '?' in source}
+    replacements = {}
+    for source, destination in routes.items():
+        if '?' not in source: continue
+        replacements[SOURCE + source] = TARGET + destination
+        replacements[SOURCE + source.replace('%', '%25')] = TARGET + destination
     for source, destination in routes.items():
         text = fetch(source).decode()
         text = re.sub(r'<link[^>]*dns-prefetch[^>]*>', '', text, flags=re.I)
@@ -57,6 +61,7 @@ def main():
         text = re.sub(r'<link\b[^>]*(?:application/(?:rss\+xml|json)|api\.w\.org|shortlink|oembed)[^>]*>', '', text, flags=re.I)
         collect_assets(text)
         for old, new in replacements.items(): text = text.replace(old, new)
+        text = re.sub(r'<link[^>]*xmlrpc\.php[^>]*>', '', text, flags=re.I)
         text = rewrite(text)
         text = text.replace('</body>', '<script src="' + BASE + '/preview.js" defer></script></body>')
         output = OUT / unquote(destination).lstrip('/') / 'index.html'
