@@ -1,0 +1,23 @@
+name: Загрузить на InfinityFree
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: infinityfree-deploy
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Проверить границы загрузки
+        run: python3 -m unittest discover -s tests -p 'test_deploy_ftps.py'
+      - name: Загрузить тему и плагин по FTPS
+        env:
+          GORIZONT_FTP_HOST: ${{ secrets.GORIZONT_FTP_HOST }}
+          GORIZONT_FTP_USER: ${{ secrets.GORIZONT_FTP_USER }}
+          GORIZONT_FTP_PASSWORD: ${{ secrets.GORIZONT_FTP_PASSWORD }}
+          GORIZONT_FTP_ROOT: ${{ vars.GORIZONT_FTP_ROOT || 'htdocs' }}
+        run: python3 scripts/deploy_ftps.py

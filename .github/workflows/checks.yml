@@ -16,6 +16,8 @@ jobs:
           node --check wp-content/plugins/gorizont-core/blocks/editor.js
           node --check tests/browser.cjs
           bash -n bin/setup.sh bin/configure.sh bin/wp
+      - name: Проверить загрузчик FTPS
+        run: python3 -m unittest discover -s tests -p test_deploy_ftps.py
       - name: Установить WordPress с демоматериалами
         run: ./bin/setup.sh
       - name: Проверить PHP и интеграцию

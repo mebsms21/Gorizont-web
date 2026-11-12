@@ -6,3 +6,5 @@ backups/
 test-results/
 *.sql
 *.log
+__pycache__/
+*.py[cod]

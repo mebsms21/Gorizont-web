@@ -4,6 +4,10 @@
 
 Исходники: https://github.com/mebsms21/Gorizont-web . Проверки запускаются автоматически через GitHub Actions. Репозиторий содержит тему, плагин и установщик; база, локальные пароли и пользовательская медиатека в Git не включаются.
 
+![Светлая концепция ГОРИЗОНТ](wp-content/themes/gorizont/screenshot.png)
+
+Публикация на выбранном бесплатном хостинге: [InfinityFree](docs/INFINITYFREE.md).
+
 ## Быстрый запуск
 
 Нужны Docker Engine / Docker Desktop с Compose v2, Bash и OpenSSL. Рекомендуется 8 ГБ свободного диска; Docker с драйвером VFS может расходовать существенно больше. На Windows запускайте команды в WSL2.
