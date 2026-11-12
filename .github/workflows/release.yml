@@ -1,0 +1,42 @@
+name: Собрать тестовый релиз
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: gorizont-release
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Собрать установочные архивы
+        run: |
+          mkdir -p dist
+          python3 - <<'PY'
+          import zipfile
+          from pathlib import Path
+          for source, target in [('wp-content/themes/gorizont', 'gorizont-theme.zip'), ('wp-content/plugins/gorizont-core', 'gorizont-core.zip')]:
+              root = Path(source)
+              with zipfile.ZipFile(Path('dist') / target, 'w', zipfile.ZIP_DEFLATED) as archive:
+                  for item in sorted(root.rglob('*')):
+                      if item.is_file():
+                          archive.write(item, root.name + '/' + str(item.relative_to(root)))
+          PY
+          git archive --format=zip --prefix=gorizont/ --output=dist/gorizont-wordpress.zip HEAD
+          cp wp-content/themes/gorizont/screenshot.png dist/gorizont-preview.png
+      - name: Опубликовать ZIP в GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          tag=v1.0.0-demo
+          if gh release view "$tag" --json isDraft > /tmp/release.json 2>/dev/null; then
+            python3 -c 'import json; assert json.load(open("/tmp/release.json"))["isDraft"], "Релиз уже опубликован: его файлы не заменяются"'
+          else
+            gh release create "$tag" --target "$GITHUB_SHA" --title 'ГОРИЗОНТ — WordPress, тестовая версия' --notes-file docs/RELEASE.md --draft --prerelease
+          fi
+          gh release upload "$tag" dist/* --clobber
+          gh release edit "$tag" --target "$GITHUB_SHA" --notes-file docs/RELEASE.md --draft=false --prerelease
